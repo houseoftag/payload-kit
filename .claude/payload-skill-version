@@ -1,0 +1,5 @@
+# Drift-detection pins for this project (see CLAUDE.md "Payload projects" workflow).
+# On the next Payload QoL request, compare these against the installed plugin /
+# published package and surface drift.
+payload-skill: 2026.6.1
+payload-kit: 0.1.0

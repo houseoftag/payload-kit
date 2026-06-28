@@ -1,0 +1,84 @@
+{
+  "name": "@houseoftag/payload-kit",
+  "version": "0.1.0",
+  "description": "Mechanical editor-UX helpers for Payload CMS 3 + Next.js 15 sites — link fields, link resolution, slug/SEO fields, a single anti-drift route map, live-preview wiring, a Media collection factory, block row labels, and an access-control kit.",
+  "license": "MIT",
+  "author": "House of Tag",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./fields": {
+      "types": "./dist/fields/index.d.ts",
+      "import": "./dist/fields/index.js"
+    },
+    "./client": {
+      "types": "./dist/client/index.d.ts",
+      "import": "./dist/client/index.js"
+    },
+    "./next": {
+      "types": "./dist/next/index.d.ts",
+      "import": "./dist/next/index.js"
+    },
+    "./access": {
+      "types": "./dist/access/index.d.ts",
+      "import": "./dist/access/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsup && node scripts/verify-dist.mjs",
+    "verify-dist": "node scripts/verify-dist.mjs",
+    "test": "node scripts/smoke.mjs",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "peerDependencies": {
+    "@payloadcms/live-preview-react": ">=3 <4",
+    "@payloadcms/ui": ">=3 <4",
+    "next": ">=15 <16",
+    "payload": ">=3 <4",
+    "react": ">=19 <20",
+    "react-dom": ">=19 <20"
+  },
+  "peerDependenciesMeta": {
+    "@payloadcms/live-preview-react": {
+      "optional": true
+    },
+    "@payloadcms/ui": {
+      "optional": true
+    },
+    "next": {
+      "optional": true
+    }
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@payloadcms/live-preview-react": "3.85.1",
+    "@payloadcms/ui": "3.85.1",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "next": "15.4.11",
+    "payload": "3.85.1",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "tsup": "^8.3.5",
+    "typescript": "5.7.3"
+  }
+}
