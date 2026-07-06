@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig, GlobalConfig } from 'payload'
 import type { SiteRoutes } from '../routes'
 import type { LivePreviewBreakpoint, PreviewSearchParams } from './types'
 import { DEFAULT_LIVE_PREVIEW_BREAKPOINTS } from './types'
@@ -23,6 +23,11 @@ export interface PreviewHelpers {
   collectionLivePreview(
     collection: string,
   ): Pick<NonNullable<CollectionConfig['admin']>, 'livePreview' | 'preview'>
+  /**
+   * Spreadable `admin.livePreview` + `admin.preview` for a GLOBAL that renders a fixed
+   * page (e.g. a HomePage global at `'/'`). Pass the site path the global renders at.
+   */
+  globalLivePreview(path: string): Pick<NonNullable<GlobalConfig['admin']>, 'livePreview' | 'preview'>
 }
 
 /**
@@ -71,5 +76,20 @@ export function createPreview(opts: PreviewOptions): PreviewHelpers {
     preview: (data) => generatePreviewPath({ collection, slug: slugOf(collection, data) }),
   })
 
-  return { generatePreviewPath, collectionLivePreview }
+  // Globals have no slug/collection — the preview handler only needs `path` + secret.
+  const globalLivePreview: PreviewHelpers['globalLivePreview'] = (path) => {
+    const previewPath = (): string => {
+      const params = new URLSearchParams({ path, previewSecret: previewSecret() })
+      return `${previewRoute}?${params.toString()}`
+    }
+    return {
+      livePreview: {
+        url: () => `${serverURL()}${previewPath()}`,
+        breakpoints,
+      },
+      preview: () => previewPath(),
+    }
+  }
+
+  return { generatePreviewPath, collectionLivePreview, globalLivePreview }
 }
