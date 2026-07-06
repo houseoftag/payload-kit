@@ -99,7 +99,7 @@ export const resolveLinks = <T>(node: T, routes: SiteRoutes): T => {
 
   const docHref = (collection: string | undefined, doc: unknown): string | undefined => {
     if (!collection || !doc || typeof doc !== 'object') return undefined
-    const slug = (doc as { slug?: unknown }).slug
+    const slug = (doc as Record<string, unknown>)[routes.slugFieldOf(collection)]
     if (typeof slug !== 'string' || !slug) return undefined
     return routes.href(collection, slug)
   }

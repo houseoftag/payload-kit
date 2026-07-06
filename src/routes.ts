@@ -17,6 +17,11 @@ export interface RouteEntry {
   rootPath?: string
   /** Editor-facing label for the link picker (e.g. `'News post'`). */
   label?: string
+  /**
+   * Doc field holding the routable slug (default `'slug'`). For collections keyed by
+   * an external system's handle (e.g. a BigCommerce product slug stored as `bcSlug`).
+   */
+  slugField?: string
 }
 
 export interface RoutesConfig {
@@ -41,6 +46,8 @@ export interface SiteRoutes {
   path(collection: string, slug: string): string
   isRoutable(collection: string): boolean
   entry(collection: string): RouteEntry | undefined
+  /** Name of the doc field holding the collection's routable slug (default `'slug'`). */
+  slugFieldOf(collection: string): string
 }
 
 export function defineRoutes(config: RoutesConfig): SiteRoutes {
@@ -70,5 +77,7 @@ export function defineRoutes(config: RoutesConfig): SiteRoutes {
     return path(collection, slug)
   }
 
-  return Object.freeze({ collections, href, path, isRoutable, entry })
+  const slugFieldOf = (collection: string): string => routes[collection]?.slugField ?? 'slug'
+
+  return Object.freeze({ collections, href, path, isRoutable, entry, slugFieldOf })
 }

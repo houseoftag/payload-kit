@@ -56,18 +56,19 @@ export function createPreview(opts: PreviewOptions): PreviewHelpers {
     return `${previewRoute}?${params.toString()}`
   }
 
-  const slugOf = (data: unknown): string => {
-    const s = (data as { slug?: unknown } | null | undefined)?.slug
+  // Honors the route's `slugField` (default `'slug'`) — see `RouteEntry.slugField`.
+  const slugOf = (collection: string, data: unknown): string => {
+    const s = (data as Record<string, unknown> | null | undefined)?.[routes.slugFieldOf(collection)]
     return typeof s === 'string' ? s : ''
   }
 
   const collectionLivePreview: PreviewHelpers['collectionLivePreview'] = (collection) => ({
     livePreview: {
       url: ({ data }) =>
-        `${serverURL()}${generatePreviewPath({ collection, slug: slugOf(data) }) ?? ''}`,
+        `${serverURL()}${generatePreviewPath({ collection, slug: slugOf(collection, data) }) ?? ''}`,
       breakpoints,
     },
-    preview: (data) => generatePreviewPath({ collection, slug: slugOf(data) }),
+    preview: (data) => generatePreviewPath({ collection, slug: slugOf(collection, data) }),
   })
 
   return { generatePreviewPath, collectionLivePreview }

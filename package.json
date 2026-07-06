@@ -1,6 +1,6 @@
 {
   "name": "@houseoftag/payload-kit",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Mechanical editor-UX helpers for Payload CMS 3 + Next.js 15 sites — link fields, link resolution, slug/SEO fields, a single anti-drift route map, live-preview wiring, a Media collection factory, block row labels, and an access-control kit.",
   "license": "MIT",
   "author": "House of Tag",
